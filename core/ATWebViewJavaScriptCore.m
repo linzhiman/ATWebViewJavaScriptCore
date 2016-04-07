@@ -16,7 +16,6 @@
 @property (nonatomic, weak) UIWebView *webView;
 @property (nonatomic, weak) id<UIWebViewDelegate> webViewDelegate;
 @property (nonatomic, strong) NSMutableArray *actions;
-@property (nonatomic, strong) JSManagedValue *callback;
 
 @end
 
@@ -78,7 +77,7 @@
 
 - (void)insertAppServiceScript
 {
-    JSContext *context = [_webView valueForKeyPath:@"documentView.webView.mainFrame.javaScriptContext"];
+    JSContext *context = [self context];
     context[@"appJavaScriptBridge"] = self;
 }
 
@@ -93,9 +92,8 @@
 
 - (void)setCallback:(JSValue *)callback
 {
-    _callback = [JSManagedValue managedValueWithValue:callback];
-    JSContext *context = [_webView valueForKeyPath:@"documentView.webView.mainFrame.javaScriptContext"];
-    [context.virtualMachine addManagedReference:_callback withOwner:self];
+    JSContext *context = [self context];
+    context[@"appJavaScriptBridge"][@"callback"] = callback;
 }
 
 - (void)callNative:(NSString *)command argument:(NSDictionary *)argument
@@ -109,7 +107,15 @@
 
 - (void)callJavaScriptWithCommand:(NSString *)command argument:(NSDictionary *)argument
 {
-    [_callback.value callWithArguments:@[command, argument]];
+    JSContext *context = [self context];
+    NSData *data = [NSJSONSerialization dataWithJSONObject:argument options:NSJSONWritingPrettyPrinted error:nil];
+    NSString *argumentString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    [context evaluateScript:[NSString stringWithFormat:@"appJavaScriptBridge.callback('%@', %@)", command, argumentString]];
+}
+
+- (JSContext *)context
+{
+    return [_webView valueForKeyPath:@"documentView.webView.mainFrame.javaScriptContext"];
 }
 
 + (instancetype)bridgeForWebView:(UIWebView*)webView webViewDelegate:(id<UIWebViewDelegate>)webViewDelegate
