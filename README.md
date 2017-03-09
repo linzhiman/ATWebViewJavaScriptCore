@@ -6,7 +6,7 @@
 
 2、页面JavaScript调用Native  
 
-    window.appJavaScriptBridge.callNative(command, argument);
+    window.appJavaScriptBridge.callNative(command, argument);
     如果需要App回调，需将callback函数挂在window.appJavaScriptBridge，函数名自定义，如callbackName，并在argument中添加字段'callback':'callbackName'；
     其中callback为 function callbackName(command, argument)；
 
