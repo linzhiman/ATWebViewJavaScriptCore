@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DC394C721E70EEC100D24CEF /* NSDictionary+JSONSafeGet.m in Sources */ = {isa = PBXBuildFile; fileRef = DC394C711E70EEC100D24CEF /* NSDictionary+JSONSafeGet.m */; };
 		DC65787C1CAD0C1100679FD3 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = DC65787B1CAD0C1100679FD3 /* main.m */; };
 		DC65787F1CAD0C1100679FD3 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = DC65787E1CAD0C1100679FD3 /* AppDelegate.m */; };
 		DC6578821CAD0C1100679FD3 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DC6578811CAD0C1100679FD3 /* ViewController.m */; };
@@ -18,6 +19,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		DC394C701E70EEC000D24CEF /* NSDictionary+JSONSafeGet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+JSONSafeGet.h"; sourceTree = "<group>"; };
+		DC394C711E70EEC100D24CEF /* NSDictionary+JSONSafeGet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+JSONSafeGet.m"; sourceTree = "<group>"; };
 		DC6578771CAD0C1100679FD3 /* demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = demo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DC65787B1CAD0C1100679FD3 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		DC65787D1CAD0C1100679FD3 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -89,8 +92,10 @@
 			isa = PBXGroup;
 			children = (
 				DC6578921CAD0C9400679FD3 /* ATWebViewJavaScriptCore.h */,
-				DC6578951CAD0C9400679FD3 /* ATWebViewJavaScriptCore.m */,
 				DC6578931CAD0C9400679FD3 /* ATWebViewJavaScriptCore.html */,
+				DC6578951CAD0C9400679FD3 /* ATWebViewJavaScriptCore.m */,
+				DC394C701E70EEC000D24CEF /* NSDictionary+JSONSafeGet.h */,
+				DC394C711E70EEC100D24CEF /* NSDictionary+JSONSafeGet.m */,
 			);
 			name = core;
 			path = ../core;
@@ -171,6 +176,7 @@
 				DC6578821CAD0C1100679FD3 /* ViewController.m in Sources */,
 				DC65787F1CAD0C1100679FD3 /* AppDelegate.m in Sources */,
 				DC65787C1CAD0C1100679FD3 /* main.m in Sources */,
+				DC394C721E70EEC100D24CEF /* NSDictionary+JSONSafeGet.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

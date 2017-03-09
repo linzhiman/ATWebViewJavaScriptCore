@@ -7,6 +7,7 @@
 //
 
 #import "ATWebViewJavaScriptCore.h"
+#import "NSDictionary+JSONSafeGet.h"
 
 #define CheckCurrentWebView(returnValue) \
     if (webView != _webView) { return returnValue; }
@@ -50,6 +51,8 @@
 {
     CheckCurrentWebView()
     
+    [self insertAppServiceScript];
+    
     if ([_webViewDelegate respondsToSelector:@selector(webViewDidStartLoad:)]) {
         [_webViewDelegate webViewDidStartLoad:webView];
     }
@@ -90,27 +93,32 @@
     [_actions addObject:action];
 }
 
-- (void)setCallback:(JSValue *)callback
-{
-    JSContext *context = [self context];
-    context[@"appJavaScriptBridge"][@"callback"] = callback;
-}
+//- (void)setCallback:(JSValue *)callback
+//{
+//    JSContext *context = [self context];
+//    context[@"appJavaScriptBridge"][@"callback"] = callback;
+//}
 
 - (void)callNative:(NSString *)command argument:(NSDictionary *)argument
 {
+    NSString *callback = [argument stringSafeGet:@"callback"];
     for (id<ATWebViewJavaScriptCoreAction> action in _actions) {
         if ([command isEqualToString:[action command]]) {
-            [action actionWithArgument:argument];
+            [action actionWithArgument:argument callback:callback];
         }
     }
 }
 
-- (void)callJavaScriptWithCommand:(NSString *)command argument:(NSDictionary *)argument
+- (void)callJavaScriptWithCommand:(NSString *)command argument:(NSDictionary *)argument callback:(NSString *)callback
 {
+    if (callback.length == 0) {
+        return;
+    }
+    
     JSContext *context = [self context];
     NSData *data = [NSJSONSerialization dataWithJSONObject:argument options:NSJSONWritingPrettyPrinted error:nil];
     NSString *argumentString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-    [context evaluateScript:[NSString stringWithFormat:@"appJavaScriptBridge.callback('%@', %@)", command, argumentString]];
+    [context evaluateScript:[NSString stringWithFormat:@"appJavaScriptBridge.%@('%@', %@)", callback, command, argumentString]];
 }
 
 - (JSContext *)context
@@ -134,10 +142,10 @@
     return @"GetSomething";
 }
 
-- (void)actionWithArgument:(NSDictionary *)argument
+- (void)actionWithArgument:(NSDictionary *)argument callback:(NSString *)callback
 {
     if (self.bridge) {
-        [self.bridge callJavaScriptWithCommand:@"onGetSomething" argument:@{@"argument":argument}];
+        [self.bridge callJavaScriptWithCommand:@"onGetSomething" argument:@{@"argument":argument} callback:callback];
     }
 }
 
