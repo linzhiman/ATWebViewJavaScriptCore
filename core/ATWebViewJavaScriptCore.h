@@ -20,7 +20,7 @@
     window.appJavaScriptBridge.callbackName(command, argument);
  4、参数说明
     command为 String，标记需要调用的方法；
-    argument为 String，内容为JSON对象，调用方法需要的参数；App回调时为JSON对象；
+    argument为 JSON对象，调用方法需要的参数；
  5、示例
     ATWebViewJavaScriptBridge.html
  */
